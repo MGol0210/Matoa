@@ -1,0 +1,41 @@
+/* Color*/
+$color-base: #666;
+$color-secondary: #222;
+$color-text: #666;
+$color-text-secondary: #888;
+$color-text-heading: #222;
+$color-link: #3498db;
+$color-bg-footer: #282828;
+
+/* Variable Template, App Layout */
+
+//**************************
+
+$darkSkyBlue: #3498db;
+$line: #cbcacf;
+$title: #333;
+$jadeGreen: #27ae60;
+$brownishGrey: #666;
+$bloodOrange: #ff4400;
+$tomato: #e74c3c;
+$btn: #adadad;
+
+/*//Fonts-size*/
+$font-size-xs: 12px;
+$font-size-s: 14px;
+$font-size-m: 32px;
+
+/*//Url base*/
+$url-img: "../../images";
+
+%clearfix {
+	*zoom: 1;
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
