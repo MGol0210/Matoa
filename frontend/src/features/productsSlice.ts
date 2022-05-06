@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const initialState = {
+const initialState: any = {
   item: [],
   status: null,
   error: null,
 }
 
-export const productsFetch = createAsyncThunk(
+export const productsFetch: any = createAsyncThunk(
   "products/productsFetch",
   async() => {
     try{

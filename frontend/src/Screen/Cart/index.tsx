@@ -22,9 +22,11 @@ const Cart: React.FC = () => {
 
   const cart = useSelector((state: RootState) => state.cart);
 
-  function TotalPrice(promotion: number){
-    return Number(promotion * 2).toLocaleString('en-US');
-  }
+  function TotalPrice(promotion: any, cartQuantity: any){
+        return Number(promotion * cartQuantity).toLocaleString('en-US');
+    }
+
+  const TotalCart = cart.cartItems?.reduce((acc: any, ele: any) => acc + Number(ele.promotion * ele.cartQuantity), 0);
 
   return (
     <CartWrapper>
@@ -71,7 +73,7 @@ const Cart: React.FC = () => {
                   </button>
                 </div>
                 <div className='Btn-total'>
-                  <p>Rp {item.promotion}</p>
+                  <p>Rp {TotalPrice(item.promotion, item.cartQuantity)}</p>
                   <button className='Btn-Trash'>
                     <img src={images.Icon_Trash} alt="btn" />
                   </button>
@@ -94,7 +96,7 @@ const Cart: React.FC = () => {
             <p className='subtotal-txt'>Subtotal</p>
             <div className='sub-total'>
               <p className="product-price">3.312.000</p>
-              <p className="product-promotion">Rp 2.152.000</p>
+              <p className="product-promotion">Rp {TotalCart}</p>
             </div>
           </div>
         </div>
