@@ -10,41 +10,8 @@ import { CartWrapper } from './styles';
 import images from '../../assets/Images';
 import { Paper } from '@mui/material';
 
-export const listProduct: dataProducts[] = [
-  {
-    id: 0,
-    img: images.Product_1,
-    name: "Way Kambas Mini Ebony",
-    discount: 20,
-    price: 1500000,
-    promotion: 1264000,
-    series: "maple",
-    collection: "Custom Engrave",
-    message: `"Happy | Birthday | from"`,
-    package: "Wooden Packaging (Rp 50.000)",
-    tag: "",
-  },
-  {
-    id: 1,
-    img: images.Product_18,
-    name: "Sikka (Ebony & Maple)",
-    discount: 20,
-    promotion: 1264000,
-    series: "maple",
-    package: "Default Packaging (Free)",
-    tag: "New",
-  },
-  {
-    id: 2,
-    img: images.Product_18,
-    name: "Sikka (Ebony & Maple)",
-    discount: 20,
-    promotion: 1264000,
-    series: "maple",
-    package: "Default Packaging (Free)",
-    tag: "New",
-  },
-];
+import { useSelector } from 'react-redux';
+import { RootState } from "../../redux/store";
 
 const Cart: React.FC = () => {
   const [age, setAge] = React.useState('');
@@ -53,10 +20,16 @@ const Cart: React.FC = () => {
     setAge(event.target.value as string);
   };
 
+  const cart = useSelector((state: RootState) => state.cart);
+
+  function TotalPrice(promotion: number){
+    return Number(promotion * 2).toLocaleString('en-US');
+  }
+
   return (
     <CartWrapper>
       <Paper style={{maxHeight: 380, overflow: 'auto', backgroundColor: '#F7F6F4',marginBottom: 30}}>
-        {listProduct.map((item) => (
+        {cart.cartItems?.map((item: dataProducts) => (
           <div className='cart-wrapper'>
             <div className='cart-left'>
               <div className='product-img'>
@@ -92,7 +65,7 @@ const Cart: React.FC = () => {
                   <button className='Btn-Minus'>
                     <img src={images.Icon_Minus} alt="btn" />
                   </button>
-                  <p className='quantity-txt'>2</p>
+                  <p className='quantity-txt'>{item.cartQuantity}</p>
                   <button className='Btn-Plus'>
                     <img src={images.Icon_Plus} alt="btn" />
                   </button>

@@ -13,13 +13,14 @@ export type dataProducts = {
   img: string;
   name: string;
   discount: number;
-  price?: number;
+  price: number;
   promotion: number;
   series: string;
   collection?: string;
   message?: string;
   package?: string;
   tag?: string;
+  cartQuantity?: number;
 };
 
 export type dataSeries = {

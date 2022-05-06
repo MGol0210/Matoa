@@ -1,5 +1,6 @@
 import React from "react"
 import { DefaultLayout } from "../../Components/Layout/Default";
+import { useGetAllProductsQuery } from "../../features/productsApi";
 
 import Banner from './Banner';
 import Discover from './Discover';
