@@ -7,6 +7,9 @@ import { BrowserRouter,
   useMatch,
   Link,
 } from "react-router-dom"
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+
 import Home from "./Screen/Home"
 import Detail from './Screen/DetailProduct';
 import Checkout from './Screen/Checkout';
@@ -20,6 +23,7 @@ interface Props {}
 const AppRoutes = (props: Props) => {
 	return (
 		<BrowserRouter>
+      <ToastContainer/>
 			<Routes>
 			<Route path="/" element={<Home />} />
 			<Route path="/detail" element={<Detail />} />

@@ -10,15 +10,22 @@ import { CartWrapper } from './styles';
 import images from '../../assets/Images';
 import { Paper } from '@mui/material';
 
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from "../../redux/store";
+import { removeFromCart } from '../../features/cartSlice';
 
 const Cart: React.FC = () => {
+  const dispatch = useDispatch();
+
   const [age, setAge] = React.useState('');
 
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value as string);
   };
+
+  const handleRemoveFromCart = (item: dataProducts) => {
+    dispatch(removeFromCart(item))
+  }
 
   const cart = useSelector((state: RootState) => state.cart);
 
@@ -30,7 +37,7 @@ const Cart: React.FC = () => {
 
   return (
     <CartWrapper>
-      <Paper style={{maxHeight: 380, overflow: 'auto', backgroundColor: '#F7F6F4',marginBottom: 30}}>
+      <Paper style={{height: 380, overflow: 'auto', backgroundColor: '#F7F6F4',marginBottom: 30}}>
         {cart.cartItems?.map((item: dataProducts) => (
           <div className='cart-wrapper'>
             <div className='cart-left'>
@@ -74,7 +81,7 @@ const Cart: React.FC = () => {
                 </div>
                 <div className='Btn-total'>
                   <p>Rp {TotalPrice(item.promotion, item.cartQuantity)}</p>
-                  <button className='Btn-Trash'>
+                  <button className='Btn-Trash' onClick={() => handleRemoveFromCart(item)}>
                     <img src={images.Icon_Trash} alt="btn" />
                   </button>
                 </div>
