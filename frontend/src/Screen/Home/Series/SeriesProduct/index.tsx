@@ -14,7 +14,7 @@ const SeriesProduct: React.FC<IProps> = ({ name }) => {
         {listProduct
           .filter((item) => item.series === name)
           .map((item) => (
-            <div className="product-wrapper">
+            <div className="product-wrapper" key={item.id}>
               <div className="img-wrapper">
                 <img src={item.img} alt="product" />
               </div>

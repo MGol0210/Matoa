@@ -12,7 +12,7 @@ import { Paper } from '@mui/material';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from "../../redux/store";
-import { removeFromCart } from '../../features/cartSlice';
+import { addToCart, decreaseCart, removeFromCart } from '../../features/cartSlice';
 
 const Cart: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,6 +25,14 @@ const Cart: React.FC = () => {
 
   const handleRemoveFromCart = (item: dataProducts) => {
     dispatch(removeFromCart(item))
+  };
+
+  const handleIncrease = (item: dataProducts) => {
+    dispatch(addToCart(item))
+  }
+
+  const handleDecrease = (item: dataProducts) => {
+    dispatch(decreaseCart(item))
   }
 
   const cart = useSelector((state: RootState) => state.cart);
@@ -71,11 +79,11 @@ const Cart: React.FC = () => {
               </div>
               <div className='Btn'>
                 <div className='Btn-quantity'>
-                  <button className='Btn-Minus'>
+                  <button className='Btn-Minus' onClick={() => handleDecrease(item)}>
                     <img src={images.Icon_Minus} alt="btn" />
                   </button>
                   <p className='quantity-txt'>{item.cartQuantity}</p>
-                  <button className='Btn-Plus'>
+                  <button className='Btn-Plus' onClick={() => handleIncrease(item)}>
                     <img src={images.Icon_Plus} alt="btn" />
                   </button>
                 </div>

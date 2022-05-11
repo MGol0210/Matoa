@@ -33,3 +33,15 @@ export type dataContent = {
   title: string;
   content: string;
 }
+
+export type dataRegister = {
+  token: string | null,
+  name: string,
+  email: string,
+  _id: string,
+  registerStatus: string | null,
+  registerError: string | unknown,
+  loginStatus: string | null,
+  loginError: string | null,
+  userLoaded: boolean,
+}
