@@ -18,6 +18,9 @@ import Payment from './Screen/Checkout/Payment';
 import DetailOrder from './Screen/Checkout/DetailOrder';
 import Confirm from './Screen/Checkout/Confirmation';
 
+import Register from './Screen/auth/Register';
+import Login from './Screen/auth/Login';
+
 interface Props {}
 
 const AppRoutes = (props: Props) => {
@@ -27,6 +30,8 @@ const AppRoutes = (props: Props) => {
 			<Routes>
 			<Route path="/" element={<Home />} />
 			<Route path="/detail" element={<Detail />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
 			<Route path="/checkout" element={<Checkout to={""} />}>
 				<Route index element={<DetailOrder />} />
 				<Route path="/checkout/payment" element={<Payment />} />

@@ -38,8 +38,8 @@ const Cart: React.FC = () => {
   const cart = useSelector((state: RootState) => state.cart);
 
   function TotalPrice(promotion: any, cartQuantity: any){
-        return Number(promotion * cartQuantity).toLocaleString('en-US');
-    }
+    return Number(promotion * cartQuantity).toLocaleString('en-US');
+  }
 
   const TotalCart = cart.cartItems?.reduce((acc: any, ele: any) => acc + Number(ele.promotion * ele.cartQuantity), 0);
 

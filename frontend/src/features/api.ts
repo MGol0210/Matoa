@@ -1,6 +1,6 @@
-const url = "http://localhost:5000/api";
+export const url = "http://localhost:5000/api";
 
-export const setHeaders = () => {
+export const setHeaders: any = () => {
   const headers = {
     headers: {
       "x-auth-token": localStorage.getItem("token"),
@@ -10,4 +10,3 @@ export const setHeaders = () => {
   return headers;
 };
 
-export default url;

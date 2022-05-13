@@ -40,7 +40,7 @@ export type dataRegister = {
   email: string,
   _id: string,
   registerStatus: string | null,
-  registerError: string | unknown,
+  registerError: string | null,
   loginStatus: string | null,
   loginError: string | null,
   userLoaded: boolean,

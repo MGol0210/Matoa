@@ -21,13 +21,22 @@ import images from '../../../assets/Images';
 import './styles.css';
 import Cart from '../../../Screen/Cart';
 
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from '../../../redux/store';
+
+import { logoutUser } from "../../../features/authSlice";
+import { toast } from "react-toastify";
+
 
 const pages = ['Watches', 'Eyewear', 'Accessories', 'New'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Account', 'Login', 'Logout'];
 
 const Header = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+  const dispatch = useDispatch();
+  const auth = useSelector((state: RootState) => state.auth);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -42,6 +51,12 @@ const Header = () => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleCloseMenuLogout = () => {
+    setAnchorElUser(null);
+    dispatch(logoutUser(null));
+    toast.warning("Logged out!", { position: "bottom-left" });
   };
 
   const [open, setOpen] = React.useState(false);
@@ -140,17 +155,56 @@ const Header = () => {
 						<Button sx={{ width: 30, height: 30 }}>
 							<img src={images.Icon_Search} style={{ width: 30, height: 30 }}/>
 						</Button>
+
 						<Button sx={{ p: 0, mr: 2 }}>
-              <img src={images.Icon_User} />
-							<Typography sx={{ p: 1, color: '#333333', display: 'block', fontFamily: 'Taviraj' }}>
-								Login
-							</Typography>
+							<Box sx={{ flexGrow: 0 }}>
+                <Tooltip title="Open settings" onClick={handleOpenUserMenu}>
+                  <img src={images.Icon_User} />
+                </Tooltip>
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
+                >
+                  {auth._id ? (
+                  <MenuItem onClick={handleCloseMenuLogout}>
+                    Logout
+                  </MenuItem>
+                  ) : (
+                    <>
+                      <MenuItem onClick={handleCloseUserMenu}>
+                        <Link className="nav-link" to='/register'>
+                          Register
+                        </Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleCloseUserMenu}>
+                        <Link className="nav-link" to='/login'>
+                          Login
+                        </Link>
+                      </MenuItem>
+                    </>
+                  )}
+                </Menu>
+              </Box>
             </Button>
+
             <Tooltip title="Open Cart">
               <IconButton onClick={handleOpen} sx={{ p: 1, backgroundColor: '#F1DDC9' }}>
                 <img src={images.Icon_Cart}/>
               </IconButton>
             </Tooltip>
+
             <Modal
               open={open}
               onClose={handleClose}

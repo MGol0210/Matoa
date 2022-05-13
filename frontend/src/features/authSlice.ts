@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import url from "./api";
+import {url, setHeaders} from "./api";
 import { dataRegister } from "../common/data";
 import jwtDecode from "jwt-decode";
 
@@ -16,7 +16,7 @@ const initialState: dataRegister = {
   userLoaded: false,  
 };
 
-export const registerUser = createAsyncThunk(
+export const registerUser: any = createAsyncThunk(
   "auth/registerUser",
   async (values: any, { rejectWithValue }) => {
     try {
@@ -36,12 +36,76 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const loginUser: any = createAsyncThunk(
+  "auth/loginUser",
+  async (values: any, { rejectWithValue }) => {
+    try {
+      const token = await axios.post(`${url}/login`, {
+        email: values.email,
+        password: values.password,
+      });
+
+      localStorage.setItem("token", token.data);
+      return token.data;
+    } catch (error: any) {
+      console.log(error.response);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const getUser: any = createAsyncThunk(
+  "auth/getUser",
+  async (id, { rejectWithValue }) => {
+    try {
+      const token = await axios.get(`${url}/user/${id}`, setHeaders());
+
+      localStorage.setItem("token", token.data);
+
+      return token.data;
+    } catch (error: any) {
+      console.log(error.response);
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    loadUser(state, action) {
+      const token = state.token;
 
+      if (token) {
+        const user: any = jwtDecode(token);
+        return {
+          ...state,
+          token,
+          name: user.name,
+          email: user.email,
+          _id: user._id,
+          userLoaded: true,
+        };
+      } else return { ...state, userLoaded: true };
+    },
+    logoutUser(state, action) {
+      localStorage.removeItem("token");
+
+      return {
+        ...state,
+        token: "",
+        name: "",
+        email: "",
+        _id: "",
+        registerStatus: "",
+        registerError: "",
+        loginStatus: "",
+        loginError: "",
+      };
+    },
   },
+
   extraReducers: (builder) => {
     builder.addCase(registerUser.pending, (state, action) => {
       return {...state, registerStatus: "pending",}
@@ -71,7 +135,62 @@ const authSlice = createSlice({
         registerError: action.payload,
       }
     });
+
+    builder.addCase(loginUser.pending, (state, action) => {
+      return { ...state, loginStatus: "pending" };
+    });
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      if (action.payload) {
+        const user: any = jwtDecode(action.payload);
+        return {
+          ...state,
+          token: action.payload,
+          name: user.name,
+          email: user.email,
+          _id: user._id,
+          loginStatus: "success",
+        };
+      } else return state;
+    });
+    builder.addCase(loginUser.rejected, (state, action) => {
+      return {
+        ...state,
+        loginStatus: "rejected",
+        loginError: action.payload,
+      };
+    });
+
+    builder.addCase(getUser.pending, (state, action) => {
+      return {
+        ...state,
+        getUserStatus: "pending",
+      };
+    });
+
+    builder.addCase(getUser.fulfilled, (state, action) => {
+      if (action.payload) {
+        const user: any = jwtDecode(action.payload);
+        return {
+          ...state,
+          token: action.payload,
+          name: user.name,
+          email: user.email,
+          _id: user._id,
+          getUserStatus: "success",
+        };
+      } else return state;
+    });
+
+    builder.addCase(getUser.rejected, (state, action) => {
+      return {
+        ...state,
+        getUserStatus: "rejected",
+        getUserError: action.payload,
+      };
+    });
   }
 });
+
+export const { loadUser, logoutUser } = authSlice.actions;
 
 export default authSlice.reducer;

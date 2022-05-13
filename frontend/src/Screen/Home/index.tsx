@@ -16,8 +16,6 @@ interface Props {}
 
 const Home = (props: Props) => {
       const auth = useSelector((state: RootState) => state.auth);
-
-      console.log('rs', auth);
 	return <DefaultLayout>
       <Banner />
       <Discover />
